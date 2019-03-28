@@ -36,9 +36,9 @@
 
   很容易看出有两副图中蓝色点比较集中，另外两幅中比较分散，它们描述的是方差的两种情况。 比较集中的属于方差小的，比较分散的属于方差大的情况。  
 
-  再从蓝色点与红色靶心区域的位置关系，靠近红色靶心的属于偏差较小的情况，远离靶心的属于偏差较大的情况。  
+  再从蓝色点与红色靶心区域的位置关系，靠近红色靶心的属于偏差较小的情况，远离靶心的属于偏差较大的情况。 
   
-  ![](./img/bias and variance.jpg)
+  ![](https://github.com/longlively/one-week-algorithm/blob/master/primary-algorithm/img/bias%20and%20variance.jpg?raw=true)
 
   一般来说，偏差与方差是有冲突的，称为偏差-方差窘境 (bias-variance dilemma)。
 
@@ -143,25 +143,26 @@ $$
 LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
 ```
 
-**参数：** 
-fit_intercept：布尔型，默认为true 
+**参数：**  
+fit_intercept：布尔型，默认为true  
 是否对训练数据进行中心化。如果该变量为false，则表明输入的数据已经进行了中心化，在下面的过程里不进行中心化处理；否则，对输入的训练数据进行中心化处理。
 
-normalize：布尔型，默认为false 
+normalize：布尔型，默认为false  
 是否对数据进行标准化处理。
 
-copy_X：布尔型，默认为true 
+copy_X：布尔型，默认为true  
 是否对X复制，如果选择false，则直接对原数据进行覆盖。（即经过中心化，标准化后，是否把新数据覆盖到原数据上）。
 
-n_jobs：整型， 默认为1 
+n_jobs：整型， 默认为1  
 计算时设置的任务个数(number of jobs)。如果选择-1则代表使用所有的CPU。这一参数的对于目标个数>1（n_targets>1）且足够大规模的问题有加速作用。
 
-coef_：数组型变量，形状为(n_features, )或(n_targets, n_features)。 
-说明：对于线性回归问题计算得到的feature的系数。如果输入的是多目标问题，则返回一个二维数组(n_targets, n_features)；如果是单目标问题，返回一个一维数组(n_features, )。
+coef_：数组型变量，形状为(n_features, )或(n_targets, n_features)  
+说明：对于线性回归问题计算得到的feature的系数。
+如果输入的是多目标问题，则返回一个二维数组(n_targets, n_features)；
+如果是单目标问题，返回一个一维数组(n_features, )。
 
-intercept_ ：数组型变量。 
+intercept_ ：数组型变量  
 说明：线性模型中的独立项。
-
 
 <br/>
 
