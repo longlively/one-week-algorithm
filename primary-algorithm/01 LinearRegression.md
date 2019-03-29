@@ -38,7 +38,7 @@
 
   再从蓝色点与红色靶心区域的位置关系，靠近红色靶心的属于偏差较小的情况，远离靶心的属于偏差较大的情况。 
   
-  ![](https://github.com/longlively/one-week-algorithm/blob/master/primary-algorithm/img/bias%20and%20variance.jpg?raw=true)
+  ![](../img/bias-and-ariance.jpg)
 
   一般来说，偏差与方差是有冲突的，称为偏差-方差窘境 (bias-variance dilemma)。
 
