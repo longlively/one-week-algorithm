@@ -41,11 +41,11 @@
 
 2. 数据预处理
 
-   数据预处理阶段是机器学习中不可缺少的一环，它会使得数据更加有效的被模型或者评估器识别。
-   下面我们来看一下sklearn中有哪些平时我们常用的函数：
-   ```python
-   from sklearn import preprocessing
-   ```
+    数据预处理阶段是机器学习中不可缺少的一环，它会使得数据更加有效的被模型或者评估器识别。
+    下面我们来看一下sklearn中有哪些平时我们常用的函数：
+    ```python
+    from sklearn import preprocessing
+    ```
 
     1. 数据归一化  
 
@@ -56,7 +56,6 @@
         scaler = preprocessing.StandardScaler().fit(train_data)
         scaler.transform(train_data)
         scaler.transform(test_data)
-    
         # 2. 将每个特征值归一化到一个固定范围
         scaler = preprocessing.MinMaxScaler(feature_range=(0, 1)).fit(train_data)
         scaler.transform(train_data)
@@ -74,7 +73,7 @@
         ...      [ 2.,  0.,  0.],
         ...      [ 0.,  1., -1.]]
         >>> X_normalized = preprocessing.normalize(X, norm='l2')
-           
+          
         >>> X_normalized                                      
         array([[ 0.40..., -0.40...,  0.81...],
                [ 1.  ...,  0.  ...,  0.  ...],
@@ -92,47 +91,46 @@
 
 3. 数据集拆分
 
-  在得到训练数据集时，通常我们经常会把训练数据集进一步拆分成训练集和验证集，这样有助于我们模型参数的选取。
+    在得到训练数据集时，通常我们经常会把训练数据集进一步拆分成训练集和验证集，这样有助于我们模型参数的选取。
 
-  ```python
-   # 作用：将数据集划分为 训练集和测试集
-   # 格式：train_test_split(*arrays, **options)
-   from sklearn.mode_selection import train_test_split
+    ```python
+     # 作用：将数据集划分为 训练集和测试集
+     # 格式：train_test_split(*arrays, **options)
+     from sklearn.mode_selection import train_test_split
   
-   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-   """
-   参数
-   ---
-       arrays：样本数组，包含特征向量和标签
-       test_size：
-           float-获得多大比重的测试样本 （默认：0.25）
-           int - 获得多少个测试样本
-   train_size: 同test_size
-   random_state:
-       int - 随机种子（种子固定，实验可复现）
-       shuffle - 是否在分割之前对数据进行洗牌（默认True)返回
-   ---
-   分割后的列表，长度=2*len(arrays), (train-test split)
-   """
-  ```
+     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+     """
+     参数
+     ---
+         arrays：样本数组，包含特征向量和标签
+         test_size：
+             float-获得多大比重的测试样本 （默认：0.25）
+             int - 获得多少个测试样本
+     train_size: 同test_size
+     random_state:
+         int - 随机种子（种子固定，实验可复现）
+         shuffle - 是否在分割之前对数据进行洗牌（默认True)返回
+     ---
+     分割后的列表，长度=2*len(arrays), (train-test split)
+     """
+    ```
 
 4. 定义模型   
 
-  在这一步我们首先要分析自己数据的类型，搞清出你要用什么模型来做，然后我们就可以在sklearn中定义模型了。
-  sklearn为所有模型提供了非常相似的接口，这样使得我们可以更加快速的熟悉所有模型的用法。在这之前我们先来看看模型的常用属性和功能：
-
-  ```python
-   # 拟合模型
-   model.fit(X_train, y_train)
-   # 模型预测
-   model.predict(X_test)
-   
-   # 获得这个模型的参数
-   model.get_params()
-   # 为模型进行打分
-   model.score(data_X, data_y) # 线性回归：R square；分类问题：acc
-  ```
-
+    在这一步我们首先要分析自己数据的类型，搞清出你要用什么模型来做，然后我们就可以在sklearn中定义模型了。
+    sklearn为所有模型提供了非常相似的接口，这样使得我们可以更加快速的熟悉所有模型的用法。在这之前我们先来看看模型的常用属性和功能：
+ 
+    ```python
+    # 拟合模型
+    model.fit(X_train, y_train)
+    # 模型预测
+    model.predict(X_test) 
+    # 获得这个模型的参数
+    model.get_params()
+    # 为模型进行打分
+    model.score(data_X, data_y) # 线性回归：R square；分类问题：acc
+    ```
+  
     1. 线性回归
 
         ```python
@@ -149,7 +147,7 @@
         ```
 
     2. 逻辑回归LR
-
+        
         ```python
         from sklearn.linear_model import LogisticRegression
         # 定义逻辑回归模型
@@ -160,7 +158,7 @@
                 random_state=None, solver=’liblinear’, 
                 max_iter=100, multi_class=’ovr’, 
                 verbose=0, warm_start=False, n_jobs=1)
-            
+           
         """参数
         ---
             penalty：使用指定正则化项（默认：l2）
@@ -256,6 +254,7 @@
 5. 模型评估与选择篇
 
     1. 交叉验证
+    
         ```python
         from sklearn.model_selection import cross_val_score
         cross_val_score(model, X, y=None, scoring=None, cv=None, n_jobs=1)
@@ -268,6 +267,7 @@
         ```
 
     2. 检验曲线
+    
         ```python
         from sklearn.model_selection import validation_curve
         train_score, test_score = validation_curve(model, X, y, param_name, param_range, cv=None, scoring=None, n_jobs=1)
@@ -288,7 +288,7 @@
 
 6. 保存模型
 
-        1. 保存为pickle文件
+    1. 保存为pickle文件
 
         ```python
         import pickle
@@ -299,8 +299,7 @@
         with open('model.pickle', 'rb') as f:model = pickle.load(f)
         model.predict(X_test)
         ```
-
-        2. sklearn自带方法joblib
+    2. sklearn自带方法joblib
 
         ```python
         from sklearn.externals import joblib
