@@ -6,18 +6,18 @@
 
     1. 导入sklearn数据集 
 
-    slearn中包含了大量的优质的数据集，在你学习机器学习的过程中，
-    你可以通过使用这些数据集实现出不同的模型，从而提高你的动手实践能力，
-    同时这个过程也可以加深你对理论知识的理解和把握。   
+        slearn中包含了大量的优质的数据集，在你学习机器学习的过程中，
+        你可以通过使用这些数据集实现出不同的模型，从而提高你的动手实践能力，
+        同时这个过程也可以加深你对理论知识的理解和把握。   
       		
-    首先呢，要想使用sklearn中的数据集，必须导入datasets模块：
+        首先呢，要想使用sklearn中的数据集，必须导入datasets模块：
     
-    ```python
-    from sklearn import datasets
-    iris = datasets.load_iris() # 导入数据集
-    X = iris.data   # 获得其特征向量
-    y = iris.target # 获得样本label
-    ```
+        ```python
+        from sklearn import datasets
+        iris = datasets.load_iris() # 导入数据集
+        X = iris.data   # 获得其特征向量
+        y = iris.target # 获得样本label
+        ```
 
      2. 创建数据集
     
@@ -47,7 +47,7 @@
    from sklearn import preprocessing
    ```
 
-        1. 数据归一化  
+    1. 数据归一化  
 
         为了使得训练数据的标准化规则与测试数据的标准化规则同步，preprocessing中提供了很多Scaler：
         ```python
@@ -64,7 +64,7 @@
         #feature_range: 定义归一化范围，注用（）括起来
         ```
 
-        2. 正则化（normalize）
+    2. 正则化（normalize）
 
         当你想要计算两个样本的相似度时必不可少的一个操作，就是正则化。
         其思想是：首先求出样本的p-范数，然后该样本的所有元素都要除以该范数，这样最终使得每个样本的范数都为1。
@@ -81,7 +81,7 @@
                [ 0.  ...,  0.70..., -0.70...]])
         ```
 
-        3. one-hot编码  
+    3. one-hot编码  
 
         one-hot编码是一种对离散特征值的编码方式，在LR模型中常用到，用于给线性模型增加非线性能力。
         ```python
@@ -133,7 +133,7 @@
    model.score(data_X, data_y) # 线性回归：R square；分类问题：acc
   ```
 
-        1. 线性回归
+    1. 线性回归
 
         ```python
         from sklearn.linear_model import LinearRegression
@@ -148,7 +148,7 @@
         """
         ```
 
-        2. 逻辑回归LR
+    2. 逻辑回归LR
 
         ```python
         from sklearn.linear_model import LogisticRegression
@@ -172,7 +172,7 @@
         """
         ```
 
-        3. 朴素贝叶斯算法NB
+    3. 朴素贝叶斯算法NB
 
         ```python
         from sklearn import naive_bayes
@@ -190,7 +190,7 @@
         """
         ```
 
-        4. 决策树DT
+    4. 决策树DT
 
         ```python
         from sklearn import tree 
@@ -212,7 +212,7 @@
         """
         ```
 
-        5. 支持向量机SVM
+    5. 支持向量机SVM
 
         ```python
         from sklearn.svm import SVC
@@ -224,7 +224,7 @@
         """
         ```
 
-        6. k近邻算法KNN
+    6. k近邻算法KNN
 
         ```python
         from sklearn import neighbors
@@ -238,7 +238,7 @@
         """
         ```
 
-        7. 多层感知机（神经网络）
+    7. 多层感知机（神经网络）
 
         ```python
         from sklearn.neural_network import MLPClassifier
@@ -255,7 +255,7 @@
 
 5. 模型评估与选择篇
 
-        1. 交叉验证
+    1. 交叉验证
         ```python
         from sklearn.model_selection import cross_val_score
         cross_val_score(model, X, y=None, scoring=None, cv=None, n_jobs=1)
@@ -267,7 +267,7 @@
         """
         ```
 
-        2. 检验曲线
+    2. 检验曲线
         ```python
         from sklearn.model_selection import validation_curve
         train_score, test_score = validation_curve(model, X, y, param_name, param_range, cv=None, scoring=None, n_jobs=1)
