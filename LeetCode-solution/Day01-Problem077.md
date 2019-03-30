@@ -2,7 +2,7 @@
 
 > DATE: 2019.3.30 ~ 2019.3.31
 
-#### 题目描述：
+## 题目描述：
 
 > Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
 
@@ -23,15 +23,15 @@ Output:
 
 <br/>
 
-类别：Backtracking
+**类别**：Backtracking
 
-难度：Medium
+**难度**：Medium
 
 [NowCoder](https://leetcode.com/problems/combinations/)
 
 <br/>
 
-#### 解题思路：
+## 解题思路：
 
 **题目翻译**：给定两个整型数组n和k，要求返由k个数组成的组合。这k个数是在n中任选k个数，由题意可得，这里的k应该小于或等于n(这个条件不要忘了做validation  check哦).
 
@@ -43,7 +43,7 @@ Output:
 
 <br/>
 
-#### 解题代码：
+## 解题代码：
 
 ```C++
 class Solution {
