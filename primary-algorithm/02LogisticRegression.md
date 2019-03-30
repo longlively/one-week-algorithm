@@ -69,59 +69,69 @@ P(y=1|x,0)=hθ(x)
 P(y=0|x,0)=1-hθ(x)
 ```
 把这两个式子写成一个式子，就是：
+
 ```math
 P(y|x,0)=hθ(x)y(1-hθ(x))1-y
 ```
 其中y的取值只能是0或者1。得到了y的概率分布函数表达式，我们就可以用似然函数最大化来求解我们需要的模型系数θ。
 
 为了方便求解，这里我们用对数似然函数最大化，对数似然函数取反即为我们的损失函数J(θ)。其中： 
-似然函数的代数表达式为：  
-<br/>
+似然函数的代数表达式为：
+
 $$
 L(\theta) = \prod\limits_{i=1}^{m}(h_{\theta}(x^{(i)}))^{y^{(i)}}(1-h_{\theta}(x^{(i)}))^{1-y^{(i)}}
 $$  
-<br/>
+
 其中m为样本的个数。 
 对似然函数对数化取反的表达式，即损失函数表达式为：  
 
 $$
 J(\theta) = -lnL(\theta) = -\sum\limits_{i=1}^{m}(y^{(i)}log(h_{\theta}(x^{(i)}))+ (1-y^{(i)})log(1-h_{\theta}(x^{(i)})))
 $$
+
 损失函数用矩阵法表达更加简洁：
+
 $$
 J(\theta) = -Y^T\bullet logh_{\theta}(X) - (E-Y)^T\bullet log(E-h_{\theta}(X))
 $$
+
 其中E为全1向量，·为内积。
 
 ### 2.  损失函数的优化
 对于二元逻辑回归的损失函数极小化，有比较多的方法，最常见的有梯度下降法，坐标轴下降法，牛顿法等。这里推导出梯度下降法中θ每次迭代的公式。这里给出矩阵法推导二元逻辑回归梯度的过程。     
-对于
+对于：
+
 $$
 J(\theta) = -Y^T\bullet logh_{\theta}(X) - (E-Y)^T\bullet log(E-h_{\theta}(X))
 $$
-我们用$J(\theta)$对$\theta$向量求导可得：     
+
+我们用$J(\theta)$对$\theta$向量求导可得：
+
 $$
 \frac{\partial}{\partial\theta}J(\theta) = X^T[\frac{1}{h_{\theta}(X)}\odot h_{\theta}(X)\odot (E-h_{\theta}(X))\odot (-Y)] + X^T[\frac{1}{E-h_{\theta}(X)}\odot h_{\theta}(X)\odot (E-h_{\theta}(X))\odot (E-Y)]
 $$
-这一步我们用到了向量求导的链式法则，和下面三个基础求导公式的矩阵形式：   
+
+这一步我们用到了向量求导的链式法则，和下面三个基础求导公式的矩阵形式：  
+
 $$
 \frac{\partial}{\partial x}logx = 1/x    
-
 \frac{\partial}{\partial z}g(z) = g(z)(1-g(z))
-
 \frac{\partial x\theta}{\partial \theta} = x
 $$
+
 对于刚才的求导公式我们进行化简可得：
+
 $$
 \frac{\partial}{\partial\theta}J(\theta) = X^T(h_{\theta}(X) - Y )
 $$
 
 从而在梯度下降法中每一步向量θ的迭代公式如下：
+
 $$
 \theta = \theta - \alpha X^T(h_{\theta}(X) - Y )
 $$
-其中，$\alpha$为梯度下降法的步长。
 
+其中，$\alpha$为梯度下降法的步长。
 一般不用操心优化方法，大部分机器学习库都内置了各种逻辑回归的优化方法，不过了解至少一种优化方法还是有必要的。
 
 <br/>
@@ -129,22 +139,25 @@ $$
 ## 4. 正则化与模型评估指标
 ### 1. 正则化
 逻辑回归也会面临过拟合问题，需要考虑正则化。常见的有L1正则化和L2正则化。
-
 逻辑回归的L1正则化的损失函数表达式如下，相比普通的逻辑回归损失函数，增加了L1的范数做作为惩罚，超参数α作为惩罚系数，调节惩罚项的大小。
-
 二元逻辑回归的L1正则化损失函数表达式如下：
+
 $$
 J(\theta) = -Y^T\bullet logh_{\theta}(X) - (E-Y)^T\bullet log(E-h_{\theta}(X)) + ||\theta||_1　　　　
 $$
+
 其中$||\theta||_1$为$\theta$的L1范数。
 
 逻辑回归的L1正则化损失函数的优化方法常用的有坐标轴下降法和最小角回归法。
 二元逻辑回归的L2正则化损失函数表达式如下：
+
 $$
 J(\theta) = -Y^T\bullet logh_{\theta}(X) - (E-Y)^T\bullet log(E-h_{\theta}(X)) + \frac{1}{2}\alpha||\theta||_2^2
 $$
-其中$||\theta||_2$为$\theta​$的L2范数。
+
+其中$||\theta||_2$为$\theta$的L2范数。
 逻辑回归的L2正则化损失函数的优化方法和普通的逻辑回归类似。
+
 ### 2. 模型评估指标
 - 平均均方误差MSE 
 - 拟合优度Goodness of fit
