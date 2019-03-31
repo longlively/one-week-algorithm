@@ -88,10 +88,14 @@ To give all the possible subsets, we just need to exhaust all the possible combi
 
 Using [1, 2, 3] as an example, 1 appears once in every two consecutive subsets, 2 appears twice in every four consecutive subsets, and 3 appears four times in every eight subsets (initially all subsets are empty):
 
-[], [ ], [ ], [    ], [ ], [    ], [    ], [       ]
-[], [1], [ ], [1   ], [ ], [1   ], [    ], [1      ]
-[], [1], [2], [1, 2], [ ], [1   ], [2   ], [1, 2   ]
-[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]
+[], [ ], [ ], [    ], [ ], [    ], [    ], [       ]  
+
+[], [1], [ ], [1   ], [ ], [1   ], [    ], [1      ]  
+
+[], [1], [2], [1, 2], [ ], [1   ], [2   ], [1, 2   ]  
+
+[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]  
+
 
 ```C++
 class Solution {
