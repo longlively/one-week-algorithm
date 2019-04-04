@@ -15,142 +15,145 @@
 
 ## 1. 信息论基础
 
-熵Entropy：表示随机变量的不确定性.物理学中表示对事物的混乱程度的度量，熵值趋高越有秩序，反之越低越混乱无序  
-H(x) = E[I(xi)] = E[ log(2,1/p(xi)) ] = -∑p(xi)log(2,p(xi)) (i=1,2,..n)  
-H(x)表示熵值，x是随机变量，p(xi)表示第i个x发生的概率值。  
-变量不确定性越大，即可能性越多，越混乱无序，熵越大。  
-  
-联合熵：度量一个联合分布的随机系统的不确定度，比如有两个随机变量X,Y.  物理含义是观察一个多随机变量的随机系统的信息量。  
-H(X,Y) = H(X)+H(Y∣X)    
+决策树是通过一系列规则对数据进行分类的过程，他提供一种在什么条件下会得到什么值的类似规则方法，决策树分为分类树和回归树，分类树对离散变量最决策树，回归树对连续变量做决策树
 
-条件熵：上式右半部分H(Y∣X)即条件熵，物理含义是：在得知某一确定信息的基础上，获取另外一个信息时所获得的信息量。  
-随机变量X在给定条件下随机变量Y的条件熵，对定义描述为：X给定条件下Y的条件干率分布的熵对X的数学期望。  
-条件熵是用来解释信息增益而引入的概念。  
-对一个两个随机变量的随机系统，我们可以先观察一个随机变量获取信息量，观察完后，我们可以在拥有这个信息量的基础上观察第二个随机变量的信息量。  
+- 熵：衡量信息不确定性的度量指标
+传输的平均信息量可以通过求$I(x)=-logp(x)$关于概率分布$p(x)$的期望得到
+$$
+H(X)=-\displaystyle\sum_{x}p(x)logp(x)=-\sum_{i=1}^{n}p(x_i)logp(x_i)
+$$
+$H(X)$就被称为随机变量 x 的熵,它是表示随机变量不确定的度量，是对所有可能发生的事件产生的信息量的期望。
 
-信息增益：通俗理解就是熵的变化，差值算出来就是信息增益。信息增益在决策树算法中是用来选择特征的指标，信息增益越大，则这个特征的选择性越好。在概率中定义为：待分类的集合的熵和选定某个特征的条件熵之差。  
+- 联合熵：将一维随机变量分布推广到多维随机变量分布，则称其为联合熵 (Joint entropy)：
+$$
+H(X,Y)=\displaystyle\sum_{x,y}p(x,y)logp(x,y)=\sum_{i=1}^{n}\sum_{j=1}^{m}p(x_i,y_i)logp(x_i,y_i)
+$$
 
-基尼不纯度Gini: 指将来自集合中的某种结果随机应用在集合中，某一数据项的预期误差率。 可以理解为一个随机事件变成它的对立事件的概率。  
-Gini(p) =  1- 概率的平方（越确定的越纯的可能性越大的概率越接近1，1-1 此值 Gini系数 越接近0，越纯，也就是不纯度越低）  
-也就是Gini系数越小越好。和熵的概念差不多。 
+- 条件熵：表示在已知随机变量X的条件下随机变量Y的不确定性,相当于联合熵 $H(X,Y)$ 减去单独的熵 $H(X)$: 
+$$
+H(Y|X) =H(X,Y)-H(X)
+$$
+描述 X 和 Y 所需的信息是描述X自己所需的信息，加上给定X的条件下具体化Y所需的额外信息。还有[相对熵与交叉熵](https://www.cnblogs.com/kyrieng/p/8694705.html)
+
+- 信息增益：待分类的集合的熵和选定某个特征的条件熵之差（这里只的是经验熵或经验条件熵，由于真正的熵并不知道，是根据样本计算出来的），公式如下：
+$$
+IG(X|Y)=H(Y)-H(Y|X)
+$$
+
+- 基尼不纯度：从一个数据集中随机选取子项，度量其被错误的划分到其他组里的概率。(书上解释)
+  一个随机事件变成它的对立事件的概率（简单理解）
+$$
+I_G(f) = \sum\limits_{i=1}^mf_i(1-f_i) = \sum\limits_{i=1}^m(f_i - f_i^2) = \sum\limits_{i=1}^mf_i - \sum\limits_{i=1}^mf_i^2 = 1 - \sum\limits_{i=1}^mf_i^2
+$$
 
 <br/>
 
-## 2. 决策树的不同分类算法
-ID3算法：即信息增益算法，通过比较熵值变化，变化越大的决策越优先。  
-应用场景：决策树是通过一系列规则对数据进行分类的过程。ID3是最常用的一种指标，用于选择一个最适合的特征做切分树条件。
-ID3算法只能处理离散型的描述性属性。
+## 2. 决策树的不同分类算法的原理及应用场景
+ID3算法是采用信息增益来选择分裂属性，c4.5算法采用增益率，CART算法采用Gini指标（分类）或者样本最小方差（回归）;
 
-C4.5：即信息增益率，考虑了自身的信息增益，中和考虑。比如一个数据集中的ID，决策选节点时用ID3算得的信息增益值很高（每个值都分为单个叶子节点，变化多，熵高，与之前的熵之差大），应该是最优选，但它是没有意义的，所以除以它自身的熵值（自身是各个不同，无重复id，熵值高），信息增益率的引入就是这样一个中和的目的。  
-应用场景：C4.5是针对解决ID3出现的，适用于，当一个特征的可取值较多时， 每个可取值的样本数不多，很少，信息增益非常高。这时需考虑中和自身熵，适合用C4.5信息增益率。
-C4．5算法是ID3算法的后续算法，它能够处理连续型数据。
+### 2.1 ID3算法
+ID3算法选择具有最高信息增益的自变量作为当前的树叉（树的分支）,分别计算自变量的信息增益，选取其中最大的信息增益作为树叉。算法的核心是在决策树各个结点上应用信息增益准则选择特征，递归地构建决策树。
 
-CART：用基尼系数（基尼不纯度）来当做衡量标准，来度量自变量的不确定性。  
-CART算法是一种通过计算Diversity(整体)-diversity(左节点)-diversity(右节点)的值取最佳分割的算法。  
-应用场景：CART算法用Gini系数选择变量的不纯性度量。如果目标变量是标称的，并且是具有两个以上的类别，则CART可能考虑将目标类别合并成两个超类别（双化）。
+### 2.2 C4.5算法
+C4.5算法与ID3算法相似，C4.5算法对ID3算法进行了改进。C4.5在生成过程中，选择具有最大增益率的属性作为分裂属性。
+
+**相对于ID3算法，C4.5的优点：**
+- 1. 用信息增益选择属性时偏向于选择分枝比较多的属性值，即取值多的属性
+- 2. 不能处理连贯属性
+
+### 2.3 [CART分类树](https://www.cnblogs.com/yonghao/p/5135386.html)
+CART是在给定输入随机变量X条件下输出随机变量Y的条件概率分布的学习方法。
+
+- CART既能是分类树，又能是分类树；
+- 当CART是分类树时，采用GINI值作为节点分裂的依据；当CART是回归树时，采用样本的最小方差作为节点分裂的依据；
+- CART是一棵二叉树
+
+CART算法由以下两步组成：
+1. 决策树生成：基于训练数据集生成决策树，生成的决策树要尽量大；
+2. 决策树剪枝：用验证数据集对已生成的树进行剪枝选择最优子树，这时用损失函数最小作为剪枝的标准。
+
+### 2.4 应用场景
+用户流失预警、零件坏损预判、ATM机选址等
 
 <br/>
 
 ## 3. 回归树原理 
-分类数与回归树比较：  
+一个回归树对应着输入空间（即特征空间）的一个划分以及在划分单元上的输出值。**分类树**中，采用信息论中的方法，通过计算Gini指数选择最佳划分点。而在**回归树**中，采用的是启发式的方法。假如我们有n个特征，每个特征有si(i∈(1,n))si(i∈(1,n))个取值，那我们遍历所有特征，尝试该特征所有取值，对空间进行划分，直到取到特征j的取值s，使得损失函数最小，这样就得到了一个划分点。描述该过程的公式如下：
+$$
+min[min Loss(y_i, C_1)+min Loss(y_i, C_2)]
+$$
+即使用最小剩余方差(Squared Residuals Minimization)来决定Regression Tree的最优划分，该划分准则是期望划分之后的子树误差方差最小。
 
-上面的决策树目标变量（即输出结果）为分类型数值，叫分类决策树。  
-目标变量为连续型数值时的决策树叫回归决策树。  
-前者用于分类，如晴天/阴天/雨天、用户性别、邮件是否是垃圾邮件，后者用于预测实数值，如明天的温度、用户的年龄等。    
-   
-回归树原理：  
-
-是通过把连续数值离散化（即把连续型属性的值分成不同的区间），是遍历数值，找到一个合适的（衡量标准同分类树，ID3,C4.5,CART都可以用？）阈值，做为切分树条件。
 <br/>
 
 ## 4. 决策树防止过拟合手段 
-决策树过拟合的风险很大。
+决策树防止过拟合通常是通过剪枝来实现。
 可以通过剪枝（预剪枝和后剪枝）控制树的深度和广度，即，选取特征时，控制决策树的参数，即达到一定阈值停止分裂。参数包括：树的深度（几层），叶子节点数，叶节点所含样本数，信息增益等。 
+
+*树的剪枝：树剪枝可以分为先剪枝和后剪枝。*
+
+- 先剪枝：
+    通过提前停止树的构造，如通过决定在给定的节点不再分裂或划分训练元组的子集，而对树剪枝，一旦停止，该节点即成为树叶。在构造树时，可以使用诸如统计显著性、信息增益等度量评估分裂的优劣，如果划分一个节点的元组低于预先定义阈值的分裂，则给定子集的进一步划分将停止。但选取一个适当的阈值是困难的，较高的阈值可能导致过分简化的树，而较低的阈值可能使得树的简化太少。
+
+- 后剪枝：
+    它由完全生长的树剪去子树，通过删除节点的分支，并用树叶替换它而剪掉给定节点的子树，树叶用被替换的子树中最频繁的类标记。
+
+其中ID3、C4.5使用悲观剪枝方法，CART则为代价复杂度剪枝算法（后剪枝）。
 
 <br/>
 
 ## 5. 模型评估 
-sklearn中可以用：  
-回归结果.score(X_test,y_test)来算分值评估。 
+### 5.1 自助法（bootstrap）：
+　　训练集是对于原数据集的有放回抽样，如果原始数据集$N$, 可以证明，大小为$N$的自助样本大约包含原数据63.2%记录。当$N$充分大的时候，$1 - (1 - \frac{1}{N})^N$概率逼近$1-e^{-1}=0.632$。抽样$b$次，产生$b$个bootstrap样本，则总准确率为（$acc_s$为包含所有样本的准确率）：
+$$
+acc_{boot}=\frac{1}{b}\sum_{i=1}^{b}(0.632\times\varepsilon _{i}+0.368\times acc_{s})
+$$
 
-评估模型可以用：  
-自助法（bootstrap）
-准确度的区间估计  
-
-也可用其它线性回归逻辑回归的评估方法：  
-
-#MSE评估指标 均方误差  
-skl_MSE = metrics.mean_squared_error(y_test,y_pred)  
-#RMSE评估指标 均方根误差  
-skl_RMSE = np.sqrt(skl_MSE)  
-#算MAE平均绝对值误差 #单词absolute，绝对的  
-skl_MAE = metrics.mean_absolute_error(y_test,y_pred)  
-#算R^2  
-skl_R2 = metrics.r2_score(y_test,y_pred)  
-
-公式如下：  
-
-#手算R方，MSE  
-hand_MSE=np.sum(np.power((y_test.values.reshape(-1,1) - y_pred),2))/len(y_test.values)  
-#均方误差公式：y真实值与预测值之差（误差）平方（方）和再求平均（均）  
-#手算RMSE  
-hand_RMSE = np.sqrt(hand_MSE)  
-R2=1-hand_MSE/np.var(y_test.values)#代入【R方公式】,R方越大表示右半部损失越小，表示模型越好  
-#算MAE平均绝对值误差  
-hand_MAE=np.sum(np.abs((y_test.values.reshape(-1,1) - y_pred)))/len(y_test.values)
+### 5.2 准确度的区间估计：
+将分类问题看做二项分布，则有： 
+令$X$为模型正确分类，$p$为准确率，$X$服从均值$Np$、方差$Np(1−p)$的二项分布。$acc=XN$为均值$p$，方差$p(1−p)N$的二项分布。$acc$的置信区间：
+$$
+P\left(-Z_{\frac{\alpha }{2}} \leq \frac{acc-p}{\sqrt{p(1-p)/N}} \leq Z_{1-\frac{\alpha}{2}}\right)=1-\alpha
+$$
+$$
+P\in\frac{2\times N \times acc +Z_{\frac{\alpha}{2}}^{2}\pm Z_{\frac{\alpha}{2}}\sqrt{Z_{\frac{\alpha}{2}}^{2}+4\times N \times acc-4\times N \times acc^{2}}}{2(N+Z_{\frac{\alpha}{2}}^{2})}
+$$
 
 <br/>
 
 ## 6. sklearn参数详解，Python绘制决策树
-参数：
-注意max_depth树深度和
-min_samples_split内部节点再划分所需最小样本数：
-限制了子树继续划分的条件，如果某节点的样本数少于min_samples_split，则不会再分。 默认是2.如果样本量不大，不需要管这个值。
-其它默认就好，不常改。
-
-绘制见附件task3.ipynb
-
-<br/>
-
-## 7. sklearn参数 
-
+- sklearn参数详解
 ```python
-class sklearn.linear_model.LogisticRegression(penalty=’l2’, dual=False, 
-                                              tol=0.0001, C=1.0, 
-                                              fit_intercept=True,intercept_scaling=1, 
-                                              class_weight=None, random_state=None,
-                                              solver='warn', max_iter=100, 
-                                              multi_class='warn', verbose=0, 
-                                              warm_start=False, n_jobs=None)
+class sklearn.tree.DecisionTreeClassifier(criterion='gini', splitter='best', max_depth=None, min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None, class_weight=None, presort=False)
+    参数详解：
+　　criterion='gini',string,optional (default=”gini”),衡量分支好坏的标准
+　　splitter='best',string, optional (default=”best”),选择分支的策略
+　　max_depth=None, int or None, optional (default=None),树的最大深度
+　　min_samples_split=2,int,float,optional (default=2),分支时最小样本数
+　　min_samples_leaf=1, int, float,optional (default=1),叶子最少样本
+　　min_weight_fraction_leaf=0.0,float, optional (default=0.),叶子结点的最小权重
+　　max_features=None,int,float,string or None, optional (default=None),生成树时考虑的最多特征点数
+　　random_state=None,int, RandomState instance or None, optional (default=None),打乱样本时所用的随机种子
+　　max_leaf_nodes=None, int or None, optional (default=None),生成树时采用的最大叶子结点
+　　min_impurity_decrease=0.0, float, optional (default=0.),当产生分支时,增加的纯度
+　　min_impurity_split=None,float, (default=1e-7),树停止生长的阈值
+　　class_weight=None,dict,list of dicts, “balanced” or None, default=None,分支权重预设定
+　　presort=False,bool,optional(default=False),提前对数据排序,加快树的生成
 ```
+- Python绘制决策树
+```python
+from sklearn.datasets import load_iris
+from sklearn import tree
+from sklearn.tree import export_graphviz
 
-penalty：参数类型：str，可选：‘l1’ or ‘l2’, 默认: ‘l2’。该参数用于确定惩罚项的范数。
+iris = load_iris()
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(iris.data, iris.target)
 
-dual：参数类型：bool,默认：False。双重或原始公式。使用liblinear优化器，双重公式仅实现l2惩罚。
-
-tol：参数类型：float，默认：e-4。停止优化的错误率。
-
-C：参数类型：float，默认；1。正则化强度的导数，值越小强度越大。
-
-fit_intercept：参数类型：bool，默认：True。确定是否在目标函数中加入偏置。
-
-intercept_scaling：参数类型：float，默认：1。仅在使用“liblinear”且self.fit_intercept设置为True时有用。
-
-class_weight：参数类型：dict，默认：None。根据字典为每一类给予权重，默认都是1。
-
-random_state：参数类型：int，默认：None。在打乱数据时，选用的随机种子。
-
-solver：参数类型：str，可选：{'newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'}, 默认：liblinear。选用的优化器。
-
-max_iter：参数类型：int，默认：100。迭代次数。
-
-multi_class：参数类型：str，可选：{'ovr', 'multinomial', 'auto'}，默认：ovr。如果选择的选项是'ovr'，那么二进制问题适合每个标签。对于“多项式”，最小化的损失是整个概率分布中的多项式损失拟合，即使数据是二进制的。当solver ='liblinear'时，'multinomial'不可用。如果数据是二进制的，或者如果solver ='liblinear'，'auto'选择'ovr'，否则选择'multinomial'。
-
-verbose：参数类型：int，默认：0。对于liblinear和lbfgs求解器，将详细设置为任何正数以表示详细程度。
-
-warm_start：参数类型：bool，默认：False。是否使用之前的优化器继续优化。
-
-n_jobs：参数类型：bool，默认：None。是否多线程。
+export_graphviz(clf, out_file = "tree.dot", filled = True, rounded = True,class_names = iris.target_names, special_characters = True)
+```
+得到的决策树为：
+ ![](./img/DecisionTree.jpg)
 
 <br/>
 
@@ -163,4 +166,3 @@ n_jobs：参数类型：bool，默认：None。是否多线程。
 5. [详细公式推导](http://t.cn/EJ4F9Q0)
 
 <br/>
-
