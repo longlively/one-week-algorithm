@@ -112,3 +112,15 @@
 7. http请求
 
 <br/>
+
+# 任务六：
+
+> DATE: 2019.4.9 ~ 2019.4.11
+
+## 本期学习目标：
+
+啥是佩奇代码复现
+
+[代码参考](https://mp.weixin.qq.com/s/whtJOrlegpWzgisYJabxOg)
+
+<br/>
